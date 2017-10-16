@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<BCPFORMAT xmlns="http://schemas.microsoft.com/sqlserver/2004/bulkload/format" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <RECORD>
+  <FIELD ID="1" xsi:type="CharTerm" TERMINATOR='"' />
+  <FIELD ID="2" xsi:type="CharTerm" TERMINATOR='","' MAX_LENGTH="100"/>
+  <FIELD ID="3" xsi:type="CharTerm" TERMINATOR='","' MAX_LENGTH="100"/>
+  <FIELD ID="4" xsi:type="CharTerm" TERMINATOR='","' MAX_LENGTH="12"/>
+  <FIELD ID="5" xsi:type="CharTerm" TERMINATOR='","' MAX_LENGTH="12"/>
+  <FIELD ID="6" xsi:type="CharTerm" TERMINATOR='"\r\n' MAX_LENGTH="100"/>
+ </RECORD>
+ <ROW>
+  <COLUMN SOURCE="2" NAME="FileType" xsi:type="SQLVARYCHAR"/>
+  <COLUMN SOURCE="3" NAME="FileName" xsi:type="SQLVARYCHAR"/>
+  <COLUMN SOURCE="4" NAME="RecordCount" xsi:type="SQLINT"/>
+  <COLUMN SOURCE="5" NAME="FileSize" xsi:type="SQLINT"/>
+  <COLUMN SOURCE="6" NAME="MD5" xsi:type="SQLVARYCHAR"/>
+ </ROW>
+</BCPFORMAT>
