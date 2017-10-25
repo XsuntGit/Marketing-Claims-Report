@@ -1,9 +1,7 @@
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
 ALTER PROCEDURE [dbo].[sp_MarketingClaims_PatientProfile]
 AS
 SET NOCOUNT ON;
