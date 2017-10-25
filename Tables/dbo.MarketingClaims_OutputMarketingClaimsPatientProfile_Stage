@@ -23,7 +23,13 @@ CREATE TABLE [dbo].[MarketingClaims_OutputMarketingClaimsPatientProfile_Stage](
 	[Zip] [varchar](256) NULL,
 	[Treatment] [varchar](20) NULL,
 	[TreatmentStatus] [varchar](20) NULL,
-	[DateEnrolled] [varchar](8000) NULL
+	[DateEnrolled] [varchar](8000) NULL,
+	[Territory_Code_1] [varchar](50) NULL,
+	[Territory_Name_1] [varchar](50) NULL,
+	[Territory_Code_2] [varchar](50) NULL,
+	[Territory_Name_2] [varchar](50) NULL,
+	[Territory_Code_3] [varchar](50) NULL,
+	[Territory_Name_3] [varchar](50) NULL
 ) ON [PRIMARY]
 WITH
 (
