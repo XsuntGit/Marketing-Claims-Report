@@ -1,7 +1,9 @@
 SET ANSI_NULLS ON
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
+
 ALTER PROCEDURE [dbo].[sp_MarketingClaims_PatientProfile]
 AS
 SET NOCOUNT ON;
@@ -33,11 +35,19 @@ BEGIN TRY
 		'_',
 		b.TeradataTypeWeb as Treatment,
 		CONVERT(varchar(20), 'Not Started') as TreatmentStatus,
-		CASE WHEN replace(convert(varchar, convert(datetime, a.DateCreated), 111), '/', '') = '19000101' THEN NULL ELSE replace(convert(varchar, convert(datetime, a.DateCreated), 111), '/', '') END as DateEnrolled
+		CASE WHEN replace(convert(varchar, convert(datetime, a.DateCreated), 111), '/', '') = '19000101' THEN NULL ELSE replace(convert(varchar, convert(datetime, a.DateCreated), 111), '/', '') END as DateEnrolled,
+		c.TerrCode1 as Territory_Code_1,
+		c.TerrName1 as Territory_Name_1,
+		c.TerrCode2 as Territory_Code_2,
+		c.TerrName2 as Territory_Name_2,
+		c.TerrCode3 as Territory_Code_3,
+		c.TerrName3 as Territory_Name_3
 	FROM [Enbrel_Production].[dbo].[tblPatientInfo] a with (nolock)
 	LEFT OUTER JOIN [Enbrel_Production].[dbo].[tblTreatmentList] b with (nolock)
 		on a.TreatmentID = b.TreatmentID
-	WHERE ActiveFlag = 1
+	LEFT OUTER JOIN [tblZipAlignment] c  --Cross Reference table,10/20/2017
+		on a.zip = c.zipcode			
+	WHERE ActiveFlag = 1 
 
 	--ALTER INDEX [idx_MarketingClaims_OutputMarketingClaimsPatientProfile_Stage] ON [dbo].[MarketingClaims_OutputMarketingClaimsPatientProfile_Stage] REBUILD PARTITION = ALL WITH (DATA_COMPRESSION = COLUMNSTORE)
 
@@ -85,3 +95,6 @@ BEGIN CATCH
 	RAISERROR('%s', @severity, @state, @errmsg)
 
 END CATCH
+GO
+
+
