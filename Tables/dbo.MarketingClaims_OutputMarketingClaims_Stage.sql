@@ -35,7 +35,7 @@ CREATE TABLE [dbo].[MarketingClaims_OutputMarketingClaims_Stage](
 	[PharmacyNCPDP] [varchar](20) NULL,
 	[PharmacyChainNumber] [varchar](10) NULL,
 	[PharmacyChain] [varchar](50) NULL,
-	[PharmacyName] [varchar](50) NULL,
+	[PharmacyName] [varchar](150) NULL,
 	[PharmacyAddress1] [varchar](100) NULL,
 	[PharmacyAddress2] [varchar](100) NULL,
 	[PharmacyCity] [varchar](50) NULL,
