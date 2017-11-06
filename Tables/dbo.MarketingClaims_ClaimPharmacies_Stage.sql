@@ -6,7 +6,7 @@ GO
 
 CREATE TABLE [dbo].[MarketingClaims_ClaimPharmacies_Stage](
 	[PharmacyID] [int] NULL,
-	[PharmacyName] [varchar](150) NULL,
+	[PharmacyName] [varchar](50) NULL,
 	[Address1] [varchar](500) NOT NULL,
 	[Address2] [varchar](500) NOT NULL,
 	[City] [varchar](50) NOT NULL,

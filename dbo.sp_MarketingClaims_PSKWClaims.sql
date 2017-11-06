@@ -95,8 +95,7 @@ BEGIN TRY
 		on a.PatientProgramType = f.ProgramID
 	LEFT JOIN [Enbrel_Production].[dbo].[tblNDCList] ndc with (nolock)
 		on a.NDC = ndc.NDCCode
-	WHERE (a.CreatedAt in ('Patient Portal','Customer Service Portal') or a.CreatedAt is null)		--Hao 11/6/2017
-		--(a.CreatedAt <> 'TeradataImport' or a.CreatedAt is null)
+	WHERE (a.CreatedAt <> 'TeradataImport' or a.CreatedAt is null)
 		and a.Status in ('Approved', 'Reversal', 'Rejected')
 		--and year(a.DatePrescriptionFilled) = '2017'
 		and a.PatientID not in ('50491','46631','50492','51757','51758')

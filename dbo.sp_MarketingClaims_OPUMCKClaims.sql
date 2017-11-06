@@ -98,7 +98,7 @@ BEGIN TRY
 		ON a.PatientProgramType = f.ProgramID
 	LEFT JOIN [Enbrel_Production].[dbo].[tblNDCList] ndc with (nolock)
 		ON a.NDC = ndc.NDCCode
-	WHERE (CreatedAt = 'OpusdataImport')                       --Hao 11/6/2017 (CreatedAt = 'TeradataImport')
+	WHERE (CreatedAt = 'TeradataImport')
 		AND Status in ('Approved', 'Reversal', 'Rejected')
 		--and year(a.DatePrescriptionFilled) = '2017'
 		AND a.PatientID not in ('50491','46631','50492','51757','51758')
@@ -183,7 +183,7 @@ BEGIN TRY
 		ON a.PatientProgramType = f.ProgramID
 	LEFT JOIN [Enbrel_Production].[dbo].[tblNDCList] ndc with (nolock)
 		ON a.NDC = ndc.NDCCode
-	WHERE (CreatedAt = 'OpusdataImport')                       --Hao 11/6/2017 (CreatedAt = 'TeradataImport')
+	WHERE (CreatedAt = 'TeradataImport')
 		AND Status in ('Approved', 'Reversal', 'Rejected')
 		--and year(a.DatePrescriptionFilled) = '2017'
 		AND a.PatientID not in ('50491','46631','50492','51757','51758')

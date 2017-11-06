@@ -22,12 +22,12 @@ BEGIN TRY
 		Zip,	
 		DOB,
 		PreferredContactMethod)
-	SELECT 'OpusdataImport',			--11/5/2017, 'TeradataImport'
-		'OpusdataImport',				--11/5/2017, 'TeradataImport'
+	SELECT 'TeradataImport',
+		'TeradataImport',
 		GETDATE(),
 		GETDATE(),
 		1, --ActiveFlag,
-		'OpusdataImport', --Channel,    --11/5/2017, 'TeradataImport'
+		'TeradataImport', --Channel,
 		ExternalConsumerID,
 		'Virtual', -- FirstName,
 		'Patient', --LastName,
@@ -42,16 +42,16 @@ BEGIN TRY
 			SELECT OpusID 
 			FROM [Enbrel_Production].[dbo].[tblPatientInfo] with (nolock)
 			WHERE OpusID IS NOT NULL
-				--AND FirstName = 'Virtual' -- FirstName          --Hao, 11/5/2017
-				--AND LastName = 'Patient' --LastName,			  --Hao, 11/5/2017
+				AND FirstName = 'Virtual' -- FirstName
+				AND LastName = 'Patient' --LastName,
 			)
 	UNION
-	SELECT 'OpusdataImport',			--11/5/2017, 'TeradataImport'
-		'OpusdataImport',				--11/5/2017, 'TeradataImport'
+	SELECT 'TeradataImport',
+		'TeradataImport',
 		GETDATE(),
 		GETDATE(),
 		1, --ActiveFlag,
-		'OpusdataImport', --Channel,    --11/5/2017, 'TeradataImport'
+		'TeradataImport', --Channel,
 		ExternalConsumerID,
 		'Virtual', -- FirstName,
 		'Patient', --LastName,
@@ -66,8 +66,8 @@ BEGIN TRY
 			SELECT OpusID 
 			FROM [Enbrel_Production].[dbo].[tblPatientInfo] with (nolock)
 			WHERE OpusID IS NOT NULL
-				--AND FirstName = 'Virtual' -- FirstName       --Hao, 11/5/2017 
-				--AND LastName = 'Patient' --LastName,			--Hao, 11/5/2017
+				AND FirstName = 'Virtual' -- FirstName
+				AND LastName = 'Patient' --LastName,
 			)
 
 	print @@rowcount

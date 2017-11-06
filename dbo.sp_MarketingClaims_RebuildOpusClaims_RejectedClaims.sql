@@ -323,18 +323,6 @@ BEGIN TRY
 		ON a.TeradataConsumerID = b.FromTeradataID
 	WHERE a.PatientID is null
 
-	-- get patientID from OpusID  --Hao, 11/5/2017
-	UPDATE a 
-	SET a.PatientID = b.PatientID
-	FROM [dbo].[MarketingClaims_OpusRejectedClaims_Stage] as a
-	INNER JOIN [Enbrel_Production].[dbo].[tblPatientInfo] as b with (nolock)
-		ON a.ExternalConsumerID = b.OpusID
-	WHERE a.PatientID is null
-		and b.FirstName <> 'Virtual' -- FirstName,      
-		and b.LastName <> 'Patient' --LastName			 
-		and b.OpusID is not null
-		and b.ActiveFlag = 1							 
-
 	-- get patientID for virtual claims...
 	UPDATE a 
 	SET a.PatientID = b.PatientID
@@ -342,8 +330,8 @@ BEGIN TRY
 	INNER JOIN [Enbrel_Production].[dbo].[tblPatientInfo] as b with (nolock)
 		ON a.ExternalConsumerID = b.OpusID
 	WHERE a.PatientID is null
-		and b.FirstName = 'Virtual' -- FirstName,     
-		and b.LastName = 'Patient' --LastName			 
+		and b.FirstName = 'Virtual' -- FirstName,
+		and b.LastName = 'Patient' --LastName
 		and b.OpusID is not null
 
 	-- get the patient IDs from the exception tables
@@ -525,7 +513,7 @@ BEGIN TRY
 		Zip,
 		null,
 		null,
-		'OpusdataImport'             --Hao, 11/5/2017 'TeradataImport'
+		'TeradataImport' 
 	FROM [dbo].[MarketingClaims_ClaimPhysicians_Stage]
 	WHERE DoctorID is null
 		and FirstName <> '' and FirstName is not null
@@ -602,7 +590,7 @@ BEGIN TRY
 		Zip,
 		null,
 		NPINumber,
-		'OpusdataImport'             --Hao, 11/5/2017 'TeradataImport'
+		'TeradataImport'
 	FROM [dbo].[MarketingClaims_ClaimPharmacies_Stage]
 	WHERE PharmacyID is null
 		and PharmacyName <> '' and PharmacyName is not null
@@ -714,7 +702,7 @@ BEGIN TRY
 		null,
 		CopaysupportBenefitAmount,
 		CardIDNumber,
-		'OpusdataImport',             --Hao, 11/5/2017 'TeradataImport'
+		'TeradataImport',
 		null, 
 		OutOfPocketCostOOPBeforeCoPaySupport,
 		1,
@@ -819,7 +807,7 @@ BEGIN TRY
 		null,
 		CopaysupportBenefitAmount,
 		CardIDNumber,
-		'OpusdataImport',             --Hao, 11/5/2017 'TeradataImport'
+		'TeradataImport',
 		null, 
 		OutOfPocketCostOOPBeforeCoPaySupport, 
 		1,

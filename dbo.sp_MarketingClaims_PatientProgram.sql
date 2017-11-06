@@ -2,7 +2,6 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
 ALTER PROCEDURE [dbo].[sp_MarketingClaims_PatientProgram]
 AS
 SET NOCOUNT ON;
@@ -82,24 +81,6 @@ BEGIN TRY
 		FROM [EnbrelImportExport_Production].[dbo].[tblImportPatientProgramOfferHistory]
 		WHERE not(VendorCode = 'psk' 
 			and GroupNumber not in ('ED12702001','ED12702002','ED12702003','ED12702007','EX12702005','ED12702006'))
-		UNION  --Hao 11/6/2017
-		SELECT 
-			[TeradataID]
-			,[ExternalConsumerID]
-			,case when offerCD = 'MPRS' then 'MCK' else [VendorCD] end as VendorCode
-			,[SourceCD]
-			,[OfferCD]
-			,[GroupNum]
-			,[CardID]
-			,[EnrollDate]
-			,[ReEnrollDate]
-			,[CardExpDate]
-			,NULL as [AnniversaryDate]
-			,NULL as [OfferStartDate]
-			,NULL as [OfferEndDate]
-		  FROM [EnbrelImportExport_Production].[dbo].[tblImportOPUSPatientProgramOfferHistory]
-		  WHERE  not([VendorCD] = 'psk' 
-					and [GroupNum] not in ('ED12702001','ED12702002','ED12702003','ED12702007','EX12702005','ED12702006'))
 	
 	) a
 	LEFT OUTER JOIN (

@@ -36,7 +36,7 @@ CREATE TABLE [dbo].[MarketingClaims_inOpusRejectedClaims_Stage](
 	[PriorAuthorizationCode] [varchar](50) NULL,
 	[ClaimReferenceNumber] [varchar](50) NULL,
 	[PharmacyNCPDPNumber] [varchar](50) NULL,
-	[PharmacyName] [varchar](150) NULL,
+	[PharmacyName] [varchar](50) NULL,
 	[PharmacyAddress1] [varchar](50) NULL,
 	[PharmacyAddress2] [varchar](50) NULL,
 	[PharmacyCity] [varchar](50) NULL,
