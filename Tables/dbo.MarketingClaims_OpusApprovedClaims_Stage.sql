@@ -43,7 +43,7 @@ CREATE TABLE [dbo].[MarketingClaims_OpusApprovedClaims_Stage](
 	[PriorAuthorizationCode] [varchar](50) NULL,
 	[ClaimReferenceNumber] [varchar](50) NULL,
 	[PharmacyNCPDPNumber] [varchar](50) NULL,
-	[PharmacyName] [varchar](50) NULL,
+	[PharmacyName] [varchar](150) NULL,
 	[PharmacyAddress1] [varchar](500) NULL,
 	[PharmacyAddress2] [varchar](500) NULL,
 	[PharmacyCity] [varchar](50) NULL,
