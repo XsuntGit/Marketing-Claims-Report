@@ -25,7 +25,7 @@ CREATE TABLE [dbo].[MarketingClaims_OutputMarketingClaims_Stage](
 	[DrugStrength] [varchar](50) NULL,
 	[NewRefillCode] [varchar](10) NULL,
 	[Refills] [int] NULL,
-	[Quantity] [int] NULL,
+	[Quantity] [varchar](50) NULL,
 	[SubmissionMethod] [varchar](20) NULL,
 	[PriorAuthorizationCode] [varchar](50) NULL,
 	[OtherCoverageCode] [varchar](20) NULL,
