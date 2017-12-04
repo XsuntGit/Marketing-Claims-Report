@@ -718,7 +718,7 @@ BEGIN TRY
 		TeradataPrescriberMENumber,
 		TeradataDaysSupply
 	FROM Enbrel_Production..tblClaims with (nolock)
-	WHERE CreatedAt = 'CRXDataImport'
+	WHERE CreatedAt in ('CRXDataImport','SwipeDataImport')
 		and PatientID is not null 
 		and ISNUMERIC(PatientID) = 1
 
@@ -921,7 +921,7 @@ BEGIN TRY
 		TeradataPrescriberMENumber,
 		TeradataDaysSupply				
 	FROM Enbrel_Production..tblClaims with (nolock)
-	WHERE CreatedAt = 'CRXDataImport'
+	WHERE CreatedAt in ('CRXDataImport','SwipeDataImport')
 		and PatientID is not null 
 		and ISNUMERIC(PatientID) = 1
 
