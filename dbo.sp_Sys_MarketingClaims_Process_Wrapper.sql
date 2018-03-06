@@ -1,7 +1,9 @@
 SET ANSI_NULLS ON
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
+
 ALTER PROCEDURE [dbo].[sp_Sys_MarketingClaims_Process_Wrapper]
 (
 	@sDBName varchar(256),
@@ -14,20 +16,26 @@ BEGIN TRY
 	EXEC [dbo].[sp_sys_MarketingClaims_ProcessLog] 'Marketing Claims process start.'
 
 	--Rebuild Claim Data
-	EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_CombineHistoryData]
-	EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_InsertVirtualPatients]
-	EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_GetMergedTeradataIDs]
-	EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_GetTestTeradataIDs]
-	EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_RejectedClaims]
-	EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_ApprovedClaims]
-	EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_MapMasterClaimID]
-
+	--EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_CombineHistoryData]
+	--EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_InsertVirtualPatients]
+	--EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_GetMergedTeradataIDs]
+	--EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_GetTestTeradataIDs]
+	--EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_RejectedClaims]
+	--EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_ApprovedClaims]
+	--EXEC [dbo].[sp_MarketingClaims_RebuildOpusClaims_MapMasterClaimID]
+	
 	--Marketing Claims
-	EXEC [dbo].[sp_MarketingClaims_ExtractTeradataClaims]
+	EXEC [dbo].[sp_MarketingClaims_ExtractClaims]
+	--EXEC [dbo].[sp_MarketingClaims_ExtractTeradataClaims]
+
+	EXEC [dbo].[sp_MarketingClaims_MapMasterClaimID]
+
 	EXEC [dbo].[sp_MarketingClaims_PSKWClaims]
-	EXEC [dbo].[sp_MarketingClaims_OPUMCKClaims]
+	EXEC [dbo].[sp_MarketingClaims_OPUCRXClaims]
+	--EXEC [dbo].[sp_MarketingClaims_OPUMCKClaims]
 	EXEC [dbo].[sp_MarketingClaims_PatientIDs]
 	EXEC [dbo].[sp_MarketingClaims_PatientProfile]
+	
 	EXEC [dbo].[sp_MarketingClaims_PatientProgram]
 
 	--Prepare Excel file
@@ -64,6 +72,7 @@ BEGIN TRY
 	EXEC [dbo].[sp_sys_MarketingClaims_ProcessLog] 'Marketing Claims Excel Report processing end.'
 
 	--Amazon S3 Uploader code launch will be here
+	
 
 	EXEC [dbo].[sp_sys_MarketingClaims_ProcessLog] 'Marketing Claims process end.'
 
@@ -90,3 +99,6 @@ BEGIN CATCH
 	RAISERROR('%s', @severity, @state, @errmsg)
 
 END CATCH
+GO
+
+

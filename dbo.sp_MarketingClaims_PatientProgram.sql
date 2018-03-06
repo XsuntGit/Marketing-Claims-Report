@@ -1,5 +1,6 @@
 SET ANSI_NULLS ON
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 
@@ -34,7 +35,7 @@ BEGIN TRY
       ,[ExternalConsumerID]
       ,[VendorCode]
       ,[SourceCode]
-      ,CASE WHEN c.ProgramValue = 'MPRS-OPUS' THEN 'RETAIL-MPRS' ELSE c.ProgramValue END [ProgramCode]
+      ,CASE WHEN c.UpdatedCardType = 'MPRS_OPUS' THEN 'RETAIL_MPRS' ELSE c.UpdatedCardType END [ProgramCode]
       ,b.MinEnrollmentDate as [MinEnrollmentDate]
       ,a.[OfferCode]
       ,[GroupNumber]
@@ -129,6 +130,8 @@ BEGIN TRY
 		on a.ExternalConsumerID = b.OpusID
 	WHERE a.AmgenPatientID is null
 
+	--Hao, 1/10/2018
+	exec [dbo].[sp_MarketingClaims_PatientProgram_CAPSEnrollment]
 
 	TRUNCATE TABLE [dbo].[MarketingClaims_OutputMarketingClaimsPatientEnrollment_Stage]
 
@@ -147,6 +150,23 @@ BEGIN TRY
 	WHERE EnrollmentDate is not null 
 		and AmgenPatientID is not null
 
+	--Hao, 1/10/2018
+	INSERT INTO [dbo].[MarketingClaims_OutputMarketingClaimsPatientEnrollment_Stage]
+	SELECT DISTINCT
+		PatientID,
+		VendorCode,
+		CASE WHEN VendorCode = 'PSK' THEN 'IBECPYP' ELSE SourceCode END SourceCode,
+		ProgramType,
+		GroupNumber,
+		CardIDNumber,
+		replace(convert(varchar, convert(datetime, EnrollmentDate), 111), '/', '') as CopayEnrollmentDate, --Hao, 10/15/2017
+		--replace(convert(varchar, convert(datetime, MinEnrollmentDate), 111), '/', '') as CopayEnrollmentDate,
+		NULL as ProgramStartDate
+	FROM [dbo].[MarketingClaims_OutputMarketingClaimsPatientEnrollment_CAPSEnrollment] 
+	WHERE EnrollmentDate is not null 
+		and PatientID is not null
+		and OfferActivity = 'Enrollment'
+
 	
 	TRUNCATE TABLE [dbo].[MarketingClaims_OutputMarketingClaimsPatientReEnrollment_Stage]
 
@@ -162,7 +182,45 @@ BEGIN TRY
 	FROM [dbo].[MarketingClaims_MarketingClaimsPatientProgram_Stage] 
 	WHERE ReEnrollmentDate is not null
 		and AmgenPatientID is not null
-		
+
+	-- Hao, 1/10/2018
+	INSERT INTO [dbo].[MarketingClaims_OutputMarketingClaimsPatientReEnrollment_Stage]
+	SELECT DISTINCT
+		PatientID,
+		VendorCode,
+		CASE WHEN VendorCode = 'PSK' THEN 'IBECPRP' ELSE SourceCode END as SourceCode,
+		ProgramType,
+		GroupNumber,
+		CardIDNumber,
+		replace(convert(varchar, convert(datetime, ReEnrollmentDate), 111), '/', '') as CopayReenrollmentDate
+	FROM [dbo].[MarketingClaims_OutputMarketingClaimsPatientEnrollment_CAPSEnrollment] 
+	WHERE ReEnrollmentDate is not null
+		and PatientID is not null
+		and OfferActivity = 'Re-Enrollment'
+
+	--temp
+	insert into MarketingClaims_OutputMarketingClaimsPatientEnrollment_Stage(AmgenPatientID,VendorCode,SourceCode,ProgramCode,GroupNumber,CardIDNumber,CopayEnrollmentDate)
+	select a.AmgenPatientID,a.VendorCode,a.SourceCode,a.ProgramCode,a.GroupNumber,a.CardIDNumber,a.CopayReenrollmentDate
+	from (
+		select row_number() over(partition by AmgenPatientID order by CopayReEnrollmentDate) as RankID,*
+		from MarketingClaims_OutputMarketingClaimsPatientReEnrollment_Stage
+		) a
+	left join (
+	select row_number() over(partition by AmgenPatientID order by CopayEnrollmentDate) as RankID,*
+	from MarketingClaims_OutputMarketingClaimsPatientEnrollment_Stage
+	) b on a.AmgenPatientID = b.AmgenPatientID and b.RankID = 1
+	where a.RankID = 1
+		and b.CopayEnrollmentDate is null
+
+	delete a
+	from [MarketingClaims_OutputMarketingClaimsPatientReEnrollment_Stage] a
+	join (
+		select row_number() over(partition by AmgenPatientID order by CopayEnrollmentDate) as RankID,*
+		from MarketingClaims_OutputMarketingClaimsPatientEnrollment_Stage
+		) b on a.AmgenPatientID = b.AmgenPatientID and b.RankID = 1
+	where a.CopayReenrollmentDate < b.CopayEnrollmentDate
+	
+
 
 	EXEC [dbo].[sp_sys_MarketingClaims_ProcessLog] 'sp_MarketingClaims_PatientProgram end.'
 
@@ -189,3 +247,6 @@ BEGIN CATCH
 	RAISERROR('%s', @severity, @state, @errmsg)
 
 END CATCH
+GO
+
+
